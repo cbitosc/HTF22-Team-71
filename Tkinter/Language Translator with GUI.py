@@ -4,6 +4,7 @@ from tkinter import *
 from PIL import Image, ImageTk
 from googletrans import Translator
 from tkinter import messagebox
+from time import *
 from functools import partial
 
 translator = Translator()
@@ -13,6 +14,8 @@ Screen = Tk()
 Screen.title("Language Translator")
 Screen.geometry("1520x780+0+0")
 Screen.config(background='#a8dadc')
+file=open('history.txt','w')
+file.close()
 
 InputLanguageChoice = StringVar()
 TranslateLanguageChoice = StringVar()
@@ -28,7 +31,23 @@ def Translate():
     user_input_translated = translator.translate(TextVar.get(), dest=TranslateLanguageChoice.get(),
                                                  src=InputLanguageChoice.get())
     OutputVar.set(user_input_translated.text)
+    file = open('history.txt', 'a', encoding="utf-8")
+    file.write(str(strftime("[%Y-%m-%d] [%H:%M:%S]  ", gmtime())) + "     " + InputLanguageChoice.get()+':'+TextVar.get()+ "     " + TranslateLanguageChoice.get()+':'+OutputVar.get() + "\n")
+    file.close()
+    """file.write(InputLanguageChoice.get()+',')
+    file.write(TextVar.get()+',')
+    file.write(TranslateLanguageChoice.get()+',')
+    file.write(OutputVar.get()+'\n')
+    file.close()"""
 
+
+def history():
+    hist = Toplevel(Screen)
+    file = open('history.txt', 'r', encoding="utf-8")
+    for line in file:
+        l = Message(hist, anchor="w", text=line, relief="raised", width=2000, padx="70", borderwidth=0,font=Buttonfont)
+        l.pack(side="top",anchor='w')
+    hist.mainloop()
 
 def registration():
     def register_user(username,password):
@@ -110,7 +129,7 @@ def login():
 
 
 # Title and menu
-Titlefont = font.Font(size=20)
+Titlefont = font.Font(size=20,weight='bold')
 Buttonfont = font.Font(size=15)
 image = Image.open("Translate.jpg")
 image_resize = image.resize((50, 50))
@@ -120,20 +139,21 @@ Label(Screen, image=logo).place(x=20, y=20)
 image1 = Image.open("login.jpg")
 image1_resize = image1.resize((152, 40))
 loginbutton = ImageTk.PhotoImage(image1_resize)
-Button(Screen, image=loginbutton, command=login, font=Buttonfont, borderwidth=0).place(x=1300, y=20)
-Label(Screen, text="Language Translator",fg='#e63946' ,font=Titlefont, borderwidth=10).place(x=100, y=20)
+Button(Screen, image=loginbutton, command=login, borderwidth=0).place(x=1300, y=20)
+Button(Screen, text='History', command=history,font=Buttonfont).place(x=1200,y=20)
+Label(Screen, text="Language Translator",fg='#e63946',background='#a8dadc',font=Titlefont, borderwidth=10).place(x=100, y=20)
 InputLanguageChoiceMenu = OptionMenu(Screen, InputLanguageChoice, *inputlang)
 InputLanguageChoiceMenu.config(font=Buttonfont)
-Label(Screen, text="Choose a Language",fg='#457b9d', font=Buttonfont).place(x=20, y=90)
+Label(Screen, text="Choose a Language",fg='#1d3557',background='#a8dadc', font=Buttonfont).place(x=20, y=90)
 InputLanguageChoiceMenu.place(x=250, y=90)
 image2 = Image.open("translate_symbol.jpg")
 image2_resize = image2.resize((40, 40))
 trans_sym = ImageTk.PhotoImage(image2_resize)
-Label(Screen, image=trans_sym).place(x=700, y=85)
+Label(Screen, image=trans_sym).place(x=720, y=85)
 
 # choice in which the language is to be translated
 NewLanguageChoiceMenu = OptionMenu(Screen, TranslateLanguageChoice, *LanguageChoices)
-Label(Screen, text="Translated Language",fg='#1d3557',font=Buttonfont).place(x=750, y=90)
+Label(Screen, text="Translated Language",fg='#1d3557', background='#a8dadc',font=Buttonfont).place(x=780, y=90)
 NewLanguageChoiceMenu.config(font=Buttonfont)
 NewLanguageChoiceMenu.place(x=1000, y=90)
 
