@@ -5,7 +5,6 @@ from PIL import Image, ImageTk
 from googletrans import Translator
 from tkinter import messagebox
 from time import *
-from functools import partial
 
 translator = Translator()
 
