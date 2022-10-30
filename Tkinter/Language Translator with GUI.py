@@ -18,7 +18,7 @@ InputLanguageChoice = StringVar()
 TranslateLanguageChoice = StringVar()
 
 # tuple for choosing languages
-inputlang = {'Detect language', 'Hindi', 'English', 'French', 'German', 'Spanish', 'Chinese', 'Arabic', 'Portuguese', 'Indonesian', 'Japanese', 'Russian', 'Korean'}
+inputlang = {'Hindi', 'English', 'French', 'German', 'Spanish', 'Chinese', 'Arabic', 'Portuguese', 'Indonesian', 'Japanese', 'Russian', 'Korean'}
 LanguageChoices = {'Hindi', 'English', 'French', 'German', 'Spanish', "Chinese", 'Arabic', 'Portuguese', 'Indonesian', 'Japanese', 'Russian', 'Korean'}
 InputLanguageChoice.set('English')
 TranslateLanguageChoice.set('Hindi')
@@ -129,7 +129,7 @@ InputLanguageChoiceMenu.place(x=250, y=90)
 image2 = Image.open("translate_symbol.jpg")
 image2_resize = image2.resize((40, 40))
 trans_sym = ImageTk.PhotoImage(image2_resize)
-Label(Screen, image=trans_sym).place(x=700, y=90)
+Label(Screen, image=trans_sym).place(x=700, y=85)
 
 # choice in which the language is to be translated
 NewLanguageChoiceMenu = OptionMenu(Screen, TranslateLanguageChoice, *LanguageChoices)
@@ -145,5 +145,8 @@ Entry(Screen, textvariable=OutputVar, font=Buttonfont).place(x=750, y=130, width
 # Button for calling function
 Button(Screen, text="Translate", command=Translate, relief=GROOVE, font=Buttonfont, background='black',
        foreground='white').place(x=20, y=560)
-
+menu = Screen.nametowidget(NewLanguageChoiceMenu.menuname)
+menu.config(font=Buttonfont)
+menu1 = Screen.nametowidget(InputLanguageChoiceMenu.menuname)
+menu1.config(font=Buttonfont)
 mainloop()
