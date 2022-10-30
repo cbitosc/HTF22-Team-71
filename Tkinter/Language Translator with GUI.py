@@ -3,6 +3,7 @@ import tkinter.font as font
 from tkinter import *
 from PIL import Image, ImageTk
 from googletrans import Translator
+from tkinter import messagebox
 from functools import partial
 
 translator = Translator()
@@ -29,10 +30,32 @@ def Translate():
     OutputVar.set(user_input_translated.text)
 
 
+def registration():
+    reg = Toplevel(Screen)
+    reg.geometry('400x400+1050+100')
+    reg.title('Registration')
+    reg.mainloop()
+
+
 def login():
     def validateLogin(username, password):
-        print("username entered :", username.get())
-        print("password entered :", password.get())
+        user_name = username.get()
+        pass_word = password.get()
+        file = open('login credentials.csv', 'r')
+        headers = file.readline()
+        credentials = file.readline()
+        log = 0
+        while credentials != '':
+            s = credentials.split(',')
+            print(s)
+            if s[0] == user_name:
+                if s[1][:-1] == pass_word:
+                    messagebox.showinfo("Login info", "Login successful")
+                    log = 1
+                    break
+            credentials = file.readline()
+        if log==0:
+            messagebox.showinfo("Login info", "Login Unsuccessful")
         return
 
     # window
@@ -51,13 +74,13 @@ def login():
     password = StringVar()
     Entry(tkWindow, textvariable=password, show='*').place(x=250, y=150)
 
-    validateLogin = partial(validateLogin, username, password)
-
     # login button
-    loginButton = Button(tkWindow, text="Login", command=validateLogin, highlightcolor='Red',
+    loginButton = Button(tkWindow, text="Login", command=lambda: validateLogin(username,password), highlightcolor='Red',
                          relief=RAISED, font=("Times New roman", 16))
     loginButton.place(x=180, y=200)
+    register = Button(tkWindow, text="Don't have an account, Register Now.", command=registration, borderwidth=0, font=("Times New roman",12,'underline'), )
 
+    register.place(x=100,y=250)
     tkWindow.mainloop()
 
 
